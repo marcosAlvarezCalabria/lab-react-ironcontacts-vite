@@ -2,7 +2,8 @@ import "./App.css";
 import contacts from "./contacts.json"
 const fiveContacts = contacts.slice(0,5);
 
-function Contacts({name, pictureUrl, popularity}){
+function Contacts({name, pictureUrl, popularity, wonOscar, wonEmmy}){
+ 
     
   return (
     <>
@@ -11,8 +12,11 @@ function Contacts({name, pictureUrl, popularity}){
       <td><img src={pictureUrl} alt="" /></td>
       <td>{name}</td>
       <td>{popularity.toFixed(2)}</td>
+      <td>{wonEmmy && <i className="fa fa-trophy"> </i>}</td>
+      <td>{wonOscar && <i className="fa fa-trophy"></i> }</td>
     </tr>
-      </>
+
+    </>
      )
 }
 
@@ -31,6 +35,8 @@ function App() {
       <th scope="col">Picture</th>
       <th scope="col">Name</th>
       <th scope="col">Popularity</th>
+      <th scope="col">Won oscar</th>
+      <th scope="col">Won Emmy</th>
     </tr>
   </thead>
   <tbody>
@@ -39,7 +45,7 @@ function App() {
 
       {fiveContacts.map((actor) => {
         return (
-          <Contacts key={actor.id} name= {actor.name} pictureUrl={actor.pictureUrl} popularity={actor.popularity}/>
+          <Contacts key={actor.id} name= {actor.name} pictureUrl={actor.pictureUrl} popularity={actor.popularity} wonEmmy={actor.wonEmmy} wonOscar={actor.wonOscar}/>
         )
       })}
     
