@@ -13,6 +13,8 @@ function App() {
 
       <ButtonAdd setNumActors={setNumActors} setListContacts={setListContacts} listContacts={listContacts} />
 
+      <ButtonSort listContacts={listContacts} setListContacts={setListContacts}></ButtonSort>
+
       <div>
         <table className="table">
           <thead>
@@ -50,7 +52,7 @@ function Contacts({ name, pictureUrl, popularity, wonOscar, wonEmmy }) {
 
   return (
     <>
-      <th scope="row"></th>
+
       <tr>
         <td><img src={pictureUrl} alt="" /></td>
         <td>{name}</td>
@@ -64,27 +66,45 @@ function Contacts({ name, pictureUrl, popularity, wonOscar, wonEmmy }) {
 }
 
 
-function ButtonAdd({ setNumActors, listContacts }) {
 
+
+function ButtonAdd({ setNumActors, listContacts, setListContacts }) {
+  const addRandomContact = () => {
+    setNumActors(prevNumActors => prevNumActors + 1)//function toma el estado  anterior y le suma 1
+    let randomNum = Math.floor(Math.random() * (contacts.length - 5 ) + 5);
+    let newActor = contacts[randomNum];
+    const isNewActorIsRep = listContacts.some((actor) => actor.id === newActor.id);//isNewAcorIsRep  true si se da la condicion actor.id === newActor.id 
+    if (!isNewActorIsRep){ setListContacts( prevListContacts => [...prevListContacts,newActor])}
+    //si isNewAcorIsRep is false set listContacts add the newActor (use spread ...)
+    //spread te crea un nuevo array mas newAcor en esta caso 
+  }
   return (
     <div>
-      <button onClick={() => {
-
-        setNumActors(prevNumActors => prevNumActors + 1);
-        let randomNum = Math.floor(Math.random() * (contacts.length - 5) + 5);
-        let newActor = contacts[randomNum];
-        console.log(listContacts)
-
-        listContacts.push(newActor)
-
-
-
-      }}>Add Random Contacts</button>
+      <button onClick={addRandomContact}>Add Random Contacts</button>
     </div>
-  )
+  );
 }
 
 
+
+
+
+function ButtonSort({ listContacts, setListContacts }) {
+  return (
+    <>
+      <button type="button" onClick={() => {
+
+        const sortedContacts = listContacts.slice().sort((a, b) => a.name.localeCompare(b.name));
+        setListContacts(sortedContacts);
+      }}>Sort by name</button>
+
+      <button type="button" onClick={() => {
+        const sortedContacts = listContacts.slice().sort((a, b) => b.popularity - a.popularity);
+        setListContacts(sortedContacts);
+      }}>Sort by popularity</button>
+    </>
+  );
+}
 
 
 
